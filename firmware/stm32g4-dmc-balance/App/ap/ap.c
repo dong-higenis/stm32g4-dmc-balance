@@ -21,7 +21,6 @@ void apMain(void)
   uint32_t ps2_pre_time;
   ps2_pre_time = millis();
 
-  ps2_state_t ps2_state = {0, 0};
 
 	while(1)
 	{
@@ -37,7 +36,6 @@ void apMain(void)
     if (millis() - ps2_pre_time >= 5)
     {
       ps2_pre_time = millis();
-      ps2MotorWrite(&ps2_state);
     }
   }
 }
@@ -45,22 +43,5 @@ void apMain(void)
 
 void ps2MotorWrite(ps2_state_t * ps2_state)
 {
-  ps2ReadState(ps2_state);
-
-  if (ps2_state->left != 0)
-  {
-    motorWrite(0, 50, ps2_state->left);
-  } else
-  {
-    motorWrite(0, 0, 0);
-  }
-
-  if (ps2_state->right != 0)
-  {
-    motorWrite(1, 50, ps2_state->right);
-  } else
-  {
-    motorWrite(1, 0, 0);
-  }
 }
 

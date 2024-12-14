@@ -5,8 +5,6 @@
 
 #ifdef _USE_HW_I2C
 static uint32_t i2cGetTimming(uint32_t freq_khz);
-static void delayUs(uint32_t us);
-
 #ifdef _USE_HW_CLI
 static void cliI2C(cli_args_t *args);
 #endif
@@ -386,17 +384,6 @@ uint32_t i2cGetErrCount(uint8_t ch)
 {
   return i2c_errcount[ch];
 }
-
-void delayUs(uint32_t us)
-{
-  volatile uint32_t i;
-
-  for (i=0; i<us*1000; i++)
-  {
-
-  }
-}
-
 
 
 
