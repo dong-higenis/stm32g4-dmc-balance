@@ -43,9 +43,20 @@ bool hwInit(void)
   return true;
 }
 
+long map(long x, long in_min, long in_max, long out_min, long out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 void delay(uint32_t ms)
 {
   HAL_Delay(ms);
+}
+
+void delayUs(uint32_t us) 
+{
+    uint32_t startTick = micros();
+    while ((micros() - startTick) < us);
 }
 
 uint32_t millis(void)
