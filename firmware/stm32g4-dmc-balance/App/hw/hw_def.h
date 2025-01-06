@@ -19,7 +19,10 @@
 #define _USE_HW_IMU
 
 #define _USE_HW_LED
-#define HW_LED_MAX_CH 1
+#define HW_LED_MAX_CH 	1
+
+#define _USE_HW_ADC
+#define HW_ADC_MAX_CH		1
 
 #define _USE_HW_UART
 #if 0
@@ -68,6 +71,8 @@
 #define HW_PWM_MAX_CH 2
 
 #define _USE_HW_MOTOR
+#define 	HW_MOTOR_R		1
+#define		HW_MOTOR_L		0
 #define HW_MOTOR_MAX_CH 2
 
 #define _USE_HW_ENCODER
@@ -89,6 +94,8 @@
 #define _USE_CLI_HW_ENCODER 1
 #define _USE_CLI_HW_SERVO 1
 #define _USE_CLI_HW_PS2 1
+
+#define _USE_CLI_SW_PID 	1
 
 typedef enum
 {

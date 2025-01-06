@@ -11,5 +11,8 @@
 
 #include "hw.h"
 
+#include "pid.h"
+#include "balance.h"
+
 
 #endif /* AP_AP_DEF_H_ */

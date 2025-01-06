@@ -36,6 +36,7 @@ bool hwInit(void)
             (int)HAL_RCC_GetSysClockFreq()/1000000);
   logPrintf("\n");
 
+  adcInit();
   imuInit();
   servoInit();
   ps2Init();
