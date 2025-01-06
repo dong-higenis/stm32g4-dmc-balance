@@ -21,6 +21,7 @@ extern "C" {
 #include "log.h"
 #include "include/i2c.h"
 #include "include/gpio.h"
+#include "include/adc.h"
 #include "swtimer.h"
 #include "button.h"
 #include "can.h"

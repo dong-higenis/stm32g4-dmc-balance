@@ -26,7 +26,7 @@ int32_t encoderGetSpeed(void);
 uint32_t encoderGetPulseTime(void);
 float encoderGetEstmatedSpeed(float time_ms);
 int32_t encoderGetPosition(void);
-
+int32_t encoderGetCount(uint8_t ch);
 
 #endif
 
