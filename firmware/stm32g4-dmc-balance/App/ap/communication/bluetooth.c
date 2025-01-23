@@ -6,15 +6,8 @@
  */
 #include "ap_def.h"
 
-#if 0
-typedef struct
-{
-	uint32_t prescaler;
-} bluetooth_table_t;
-
-#else
-
 #define BT_RX_DATA_MAX	8
+
 uint8_t rx_flow_stage = 0;
 uint8_t rx_cmd = 0;
 uint8_t rx_len = 0;
@@ -22,10 +15,7 @@ uint8_t rx_type = 0;
 uint8_t rx_data_index = 0;
 uint8_t check_sum = 0;
 
-#endif
-
 static void cliBluetooth(cli_args_t *args);
-static union ConvertData convert_data;
 
 void btInit(void)
 {
@@ -37,9 +27,6 @@ void btUpdate(void)
 	uint8_t rx_data;
 	static uint8_t rx_data_array[BT_RX_DATA_MAX];
 
-	//
-	//	RX
-	//
   if (uartAvailable(1) > 0)
 	{
   	rx_data = uartRead(1);
@@ -55,7 +42,6 @@ void btUpdate(void)
 					rx_type = 0;
 					check_sum = 0;
 					rx_data_index = 0;
-
 					rx_flow_stage++;
 				}
 				break;
@@ -80,7 +66,6 @@ void btUpdate(void)
 
 			case 4: // data
 				rx_data_array[rx_data_index] = rx_data;
-				//logPrintf("dt:%x,%x\n", rx_data, rx_data_array[rx_data_index]);
 				check_sum ^= rx_data;
 				rx_data_index++;
 				if(rx_data_index == rx_len)
@@ -92,15 +77,6 @@ void btUpdate(void)
 			case 5: // crc
 				if(check_sum == rx_data)
 				{
-					//	Update
-#if 0
-					logPrintf("[BT] update\n");
-					logPrintf("[BT]		rx_cmd : %d\n", rx_cmd);
-					logPrintf("[BT]		rx_len : %d\n", rx_len);
-					logPrintf("[BT]		rx_type : %d\n", rx_type);
-					logPrintf("[BT]		check_sum : %d\n", check_sum);
-					logPrintf("[BT]		rx_data_index : %d\n", rx_data_index);
-#endif
 					btRxDataProcess(rx_cmd, rx_len, rx_type, rx_data_array);
 					rx_flow_stage = 0;
 				}
@@ -159,28 +135,48 @@ void btRxDataProcess(uint8_t cmd, uint8_t len, uint8_t type, uint8_t *data_array
 			setDdata(PID_TYPE_SPEED,tmp_fp);
 			break;
 
-		case 0x07:
-
+		case 0x07://	angle I-sum setting
+			tmp_fp = convertDataArrayToFloat(data_array);
+			setIsumData(PID_TYPE_ANGLE,tmp_fp);
 			break;
 
-		case 0x08:
-
+		case 0x08://	speed I-sum setting
+			tmp_fp = convertDataArrayToFloat(data_array);
+			setIsumData(PID_TYPE_SPEED,tmp_fp);
 			break;
 
-		case 0x09:
-
+		case 0x09://	angle output limit setting
+			tmp_fp = convertDataArrayToFloat(data_array);
+			setOutputLimit(PID_TYPE_ANGLE,tmp_fp);
 			break;
 
-		case 0x0A:
-
+		case 0x0A://	speed output limit setting
+			tmp_fp = convertDataArrayToFloat(data_array);
+			setOutputLimit(PID_TYPE_SPEED,tmp_fp);
 			break;
 
 		case 0x0B:
-
+			tmp_fp = convertDataArrayToFloat(data_array);
+			setPitchAngleOffset(tmp_fp);
 			break;
 
 		case 0x0C:
 
+			break;
+
+		case 0xFF:// Moving
+			if(data_array[0]==0)
+			{
+				setPitchAngleOffset(0.0f);
+			}
+			else if(data_array[0]==1)
+			{
+				setPitchAngleOffset(5.0f);
+			}
+			else if(data_array[0]==2)
+			{
+				setPitchAngleOffset(-5.0f);
+			}
 			break;
 	}
 	logPrintf("[BT]		tmp_fp : %f\n", tmp_fp);
@@ -190,9 +186,6 @@ void cliBluetooth(cli_args_t *args)
 {
 	bool ret = false;
 
-  //
-  //////////////////////////////////////////////////////////////////////////////////////
-  //
   if (args->argc == 2 && args->isStr(0, "test"))
   {
     uint8_t uart_ch;
@@ -232,9 +225,7 @@ void cliBluetooth(cli_args_t *args)
     }
     ret = true;
   }
-  //
-  //////////////////////////////////////////////////////////////////////////////////////
-  //
+
   if (ret == false)
   {
     cliPrintf("bt info\n");

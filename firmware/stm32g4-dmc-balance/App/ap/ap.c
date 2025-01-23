@@ -13,7 +13,6 @@ void apInit(void)
   logBoot(true);
 
   balanceInit();
-  pidInit();
 }
 
 void apMain(void)
@@ -32,6 +31,8 @@ void apMain(void)
 	  imuUpdate();
 	  cliMain();
 	  balanceUpdate();
+	  //btUpdate();
+	  //rcCarUpdate();
   }
 }
 
