@@ -13,6 +13,8 @@
 
 #include "pid.h"
 #include "balance.h"
+#include "bluetooth.h"
+#include "function.h"
 
 
 #endif /* AP_AP_DEF_H_ */

@@ -218,7 +218,7 @@ void cliCmd(cli_args_t *args)
     {        
       if (imuUpdateInfo(&imu_info))
       {
-        int r, p, y;
+        float r, p, y;
 
         r = imu_info.roll * 1;
         p = imu_info.pitch * 1;
@@ -226,7 +226,7 @@ void cliCmd(cli_args_t *args)
 
         data_count++;
 
-        cliPrintf("%d\t Roll: %d\t Pitch: %d\t Yaw: %d\n ", data_rate, r, p, y);
+        cliPrintf("%d\t Roll: %3.2f\t Pitch: %3.2f\t Yaw: %f3.2\n ", data_rate, r, p, y);
       }
 
       if (millis() - pre_time >= 1000)

@@ -34,8 +34,8 @@
 #define HW_UART_CH_USB _DEF_UART5
 #else
 #define HW_UART_MAX_CH 2
-#define HW_UART_CH_DEBUG _DEF_UART1
-#define HW_UART_CH_2 _DEF_UART2
+#define HW_UART_CH_DEBUG 	_DEF_UART1
+#define HW_UART_CH_2 			_DEF_UART2
 #endif
 
 #define _USE_HW_CLI

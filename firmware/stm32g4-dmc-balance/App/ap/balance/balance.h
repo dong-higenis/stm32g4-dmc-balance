@@ -33,24 +33,38 @@ typedef enum
 	DATA_TYPE_PITCH = 1
 } DataType_t;
 
+typedef enum
+{
+	PID_TYPE_ANGLE = 0,
+	PID_TYPE_SPEED = 1
+} PIDType_t;
+
 typedef struct
 {
-	float imu_data;
+	bool avg_is_ready;
 	float pid_out;
+	float	avg_data;
+	float imu_data;
 	float calculate;
 	float calculate_avg;
 	uint8_t speed;
 	uint8_t direction;
 	uint16_t avg_count;
 	uint16_t avg_index;
-	float	avg_data;
-	bool avg_is_ready;
 } balance_data_t;
 
 void balanceInit(void);
 void balanceUpdate(void);
 void balanceController(void *arg);
-
+pid_data_t getPIDdata(uint8_t ch);
+void setPIDdata(pid_data_t *target, float gain_p, float gain_i, float gain_d);
 balance_data_t balanceGetPidGain(DataType_t data_type);
+void setPdata(uint8_t ch, float gain);
+void setIdata(uint8_t ch, float gain);
+void setDdata(uint8_t ch, float gain);
+void setIsumData(uint8_t ch, float gain);
+void setOutputLimit(uint8_t ch, float gain);
+void setPitchAngleOffset(float gain);
+
 
 #endif /* AP_APPLICATION_BALANCE_H_ */
